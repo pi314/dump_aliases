@@ -36,8 +36,8 @@ def cleaned(content):
   - remove blank lines
   - return a list containing meaningful records
   '''
-  content = re.sub(r'\\[\n\r]', '', content)
   content = re.sub(r'#.*$', '', content, flags=re.M)
+  content = re.sub(r'\\[\n\r]', '', content)
   content = re.sub(r'^\s*', '', content, flags=re.M)
   
   #print repr(content)
