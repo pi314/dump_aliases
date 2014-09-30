@@ -34,7 +34,6 @@ def cleaned(content):
   - remove slash and concatenate with next line
   - remove all comments
   - remove blank lines
-  - return a list containing meaningful records
   '''
   content = re.sub(r'#.*$', '', content, flags=re.M)
   content = re.sub(r'\\[\n\r]', '', content)
