@@ -8,3 +8,8 @@ if len(sys.argv) < 3:
 ETC_ALIASES = sys.argv[1]
 NAME_FILES_DIR = sys.argv[2]
 
+def main ():
+    pass
+
+if __name__ == '__main__':
+    main()
