@@ -6,6 +6,7 @@ issues:
   - assume that the aliases file has passed ``postalias``
   - use ``argparse`` to get arguments
   - store all error/warning(s) and output it.
+  - use unittest but doctest to avoid charactor escaping problems.
 
 doctest:
   >>> content = '''
