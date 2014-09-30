@@ -14,12 +14,19 @@ doctest:
   ... '''
 """
 
+
 import re
+
 
 def parse_aliases(aliases_content):
   '''
   aliases_content -> cleaned -> split to key-value parts -> completed value part
+
+  str -> [(key, [v1, v2, v3, ...]), ...]
   '''
+  result = sorted((key, parse_values(values)) for key, values in split(cleaned( aliases_content )))
+  return result
+
 
 def cleaned(content):
   '''
