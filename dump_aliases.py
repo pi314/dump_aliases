@@ -39,3 +39,16 @@ def cleaned(content):
   content = re.sub(r'\\[\n\r]', '', content)
   content = re.sub(r'^\s*', '', content, flags=re.M)
   return content
+
+
+def split2kv(line):
+  '''
+  only use for aliases file but other included files
+  str -> {"key": str, "values": str}
+  '''
+  kv_patt = r"^\s*(?P<key>\S+?)\s*:\s*(?P<values>.+?)\s*$"
+  return re.search(kv_patt, line).groups()
+
+
+def split_values(values):
+  return re.split(r"\s*,\s*", values)
