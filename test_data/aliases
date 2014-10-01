@@ -1,0 +1,17 @@
+100g:   :include:/etc/labmate/100g.name
+101g:   :include:/etc/labmate/101g.name
+102g:   :include:/etc/labmate/102g.name
+103g:   :include:/etc/labmate/103g.name
+phd:    :include:/etc/labmate/phd.name
+meeting: :include:/etc/labmate/meeting.name
+graduated_phd:  :include:/etc/labmate/graduated_phd.name
+
+MAILER-DAEMON: postmaster
+Postmaster: root
+all_students:   :include:/etc/labmate/all_students.name
+alumni: :include:/etc/labmate/alumni.name     
+
+root: admin@domain1, admin@domain2
+test:  :include:/etc/labmate/test.name
+nobody: /dev/null
+
