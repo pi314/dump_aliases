@@ -12,6 +12,8 @@ NAME_FILES_DIR = sys.argv[2]
 
 aliases_file = []
 
+db = {}
+
 def load_aliases_file ():
     global aliases_file
     for i in open(ETC_ALIASES):
@@ -29,10 +31,37 @@ def load_aliases_file ():
             for j in emails:
                 aliases_file.append( (list_name, 'mail', j.strip()) )
 
+def add_to_db (list_name, data):
+    global db
+
+    data = data.strip()
+
+    if list_name not in db:
+        db[list_name] = set()
+
+    db[list_name].add(data)
+
+def process_record (record):
+    list_name, record_type, data = record
+    print(list_name, record_type, data)
+    if record_type == 'file':
+        pass
+    elif record_type == 'mail':
+        add_to_db(list_name, data)
+    else:
+        print('Error record type:', record)
+        exit()
+
+def dump_db ():
+    for list_name in db:
+        for data in db[list_name]:
+            print( '{}:{}'.format(list_name, data) )
+
 def main ():
     load_aliases_file()
     for i in aliases_file:
-        print(i)
+        process_record(i)
+    dump_db()
 
 if __name__ == '__main__':
     main()
