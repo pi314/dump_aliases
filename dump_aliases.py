@@ -19,16 +19,6 @@ doctest:
 import re
 
 
-def parse_aliases(aliases_content):
-  '''
-  aliases_content -> cleaned -> split to key-value parts -> completed value part
-
-  str -> [(key, [v1, v2, v3, ...]), ...]
-  '''
-  result = sorted((key, parse_values(values)) for key, values in split(cleaned( aliases_content )))
-  return result
-
-
 def cleaned(content):
   '''
   - remove slash and concatenate with next line
@@ -44,11 +34,46 @@ def cleaned(content):
 def split2kv(line):
   '''
   only use for aliases file but other included files
-  str -> {"key": str, "values": str}
+  str -> [ {"key": str, "values": str} ]
   '''
   kv_patt = r"^\s*(?P<key>\S+?)\s*:\s*(?P<values>.+?)\s*$"
-  return re.search(kv_patt, line).groups()
+  #print(repr(line))
+  result = re.findall(kv_patt, line, flags=re.M)
+  #print(result)
+  return result
 
 
 def split_values(values):
-  return re.split(r"\s*,\s*", values)
+  '''
+  only use for included files
+  str -> [ value ]
+  '''
+  #print('--->', values)
+  result = []
+  for value in re.split(r"\s*,\s*", values):
+    m = re.match(r":include:\s*(?P<path>.*)", value)
+    if m:
+      result.extend(split_values(m.groupdict()["path"]))
+    else:
+      result.append(value)
+  #print(result)
+  return result
+
+
+def get_content(path):
+  return open(path).read()
+
+
+def main(aliases_path):
+  aliases_content = get_content(aliases_path)
+  #print(aliases_content)
+  cleaned_content = cleaned(aliases_content)
+  #print(cleaned_content)
+  result = []
+  for key, values in split2kv(cleaned_content):
+    values = split_values(values)
+    for value in values:
+      result.append((key, value))
+  result.sort()
+  __import__('pprint').pprint(result)
+  return result
