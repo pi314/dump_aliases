@@ -1,5 +1,5 @@
 student1@domain1
 alumni
-:include:/etc/labmate/phd.name
+:include:./labmate/phd.name
 102g
 103g

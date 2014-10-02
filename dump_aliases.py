@@ -50,10 +50,11 @@ def split_values(values):
   '''
   #print('--->', values)
   result = []
-  for value in re.split(r"\s*,\s*", values):
+  for value in re.split(r"\s*(?:[,\n])\s*", values.strip()):
     m = re.match(r":include:\s*(?P<path>.*)", value)
     if m:
-      result.extend(split_values(m.groupdict()["path"]))
+      subcontent = get_content(m.groupdict()["path"])
+      result.extend(split_values(cleaned(subcontent)))
     else:
       result.append(value)
   #print(result)
