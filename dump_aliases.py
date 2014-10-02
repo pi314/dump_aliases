@@ -77,3 +77,8 @@ def main(aliases_path):
   result.sort()
   __import__('pprint').pprint(result)
   return result
+
+
+if __name__=='__main__':
+  aliases_file = '/etc/aliases'
+  main(aliases_file)
