@@ -12,7 +12,7 @@ NAME_FILES_DIR = sys.argv[2]
 
 aliases_file = []
 
-list_set = set()
+list_relation = {}
 
 db = {}
 
@@ -33,10 +33,10 @@ def load_aliases_file ():
             for j in emails:
                 aliases_file.append( (list_name, 'mail', j.strip()) )
 
-def setup_list_set ():
-    global list_set
+def setup_list_relation ():
+    global list_relation
     for i in aliases_file:
-        list_set.add(i[0])
+        list_relation[i] = set()
 
 def add_to_db (list_name, data):
     global db
@@ -48,27 +48,30 @@ def add_to_db (list_name, data):
 
     db[list_name].add(data)
 
-def process_name_file (list_name, file_name):
-    file_name = '/'.join( [NAME_FILES_DIR, file_name] )
-    for i in open(file_name):
+def process_name_file (list_name, file_name, stack):
+    if file_name in stack: return
+
+    full_file_name = '/'.join( [NAME_FILES_DIR, file_name] )
+    for i in open(full_file_name):
         i = re.sub(r'#.*$', '', i).strip()
         if i == '' or i[0] == '#':
             continue
+
         if ':include:' in i:
-            pass
+            sub_file_name = i.split('/')[-1]
+            process_name_file(list_name, sub_file_name, stack + [file_name])
         elif '@' in i:
             add_to_db(list_name, i)
-        elif i in list_set:
+        elif i in list_relation:
             pass
         else:
             add_to_db(list_name, i)
-        print('---', i)
 
 def process_list_record (record):
     list_name, record_type, data = record
     print('=', list_name, record_type, data, '=')
     if record_type == 'file':
-        process_name_file(list_name, data)
+        process_name_file(list_name, data, [])
     elif record_type == 'mail':
         add_to_db(list_name, data)
     else:
@@ -82,7 +85,7 @@ def dump_db ():
 
 def main ():
     load_aliases_file()
-    setup_list_set()
+    setup_list_relation()
 
     for i in aliases_file:
         process_list_record(i)
