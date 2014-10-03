@@ -11,13 +11,12 @@ ETC_ALIASES = sys.argv[1]
 NAME_FILES_DIR = sys.argv[2]
 
 aliases_file = []
-
 list_relation = {}
-
 db = {}
 
 def load_aliases_file ():
     global aliases_file
+
     for i in open(ETC_ALIASES):
         i = re.sub(r'#.*$', '', i).strip()
         if i == '' or i[0] == '#':
@@ -35,12 +34,12 @@ def load_aliases_file ():
 
 def setup_list_relation ():
     global list_relation
+
     for i in aliases_file:
-        list_relation[i] = set()
+        list_relation[ i[0] ] = set()
 
 def add_to_db (list_name, data):
     global db
-
     data = data.strip()
 
     if list_name not in db:
@@ -50,8 +49,8 @@ def add_to_db (list_name, data):
 
 def process_name_file (list_name, file_name, stack):
     if file_name in stack: return
-
     full_file_name = '/'.join( [NAME_FILES_DIR, file_name] )
+
     for i in open(full_file_name):
         i = re.sub(r'#.*$', '', i).strip()
         if i == '' or i[0] == '#':
@@ -63,13 +62,14 @@ def process_name_file (list_name, file_name, stack):
         elif '@' in i:
             add_to_db(list_name, i)
         elif i in list_relation:
+            list_relation[list_name].add(i)
             pass
         else:
             add_to_db(list_name, i)
 
 def process_list_record (record):
     list_name, record_type, data = record
-    print('=', list_name, record_type, data, '=')
+
     if record_type == 'file':
         process_name_file(list_name, data, [])
     elif record_type == 'mail':
@@ -83,12 +83,50 @@ def dump_db ():
         for data in db[list_name]:
             print( '{}:{}'.format(list_name, data) )
 
+def clean_list_relation ():
+    global list_relation
+
+    ret = {}
+    for i in list_relation:
+        if list_relation[i] != set():
+            ret[i] = list_relation[i]
+
+    list_relation = ret
+
+def merge_relations (list_name=None, stack=[]):
+    global list_relation
+
+    if list_name in stack: return set()
+
+    if list_name == None:
+        # merge first layer
+        for i in list_relation:
+            list_relation[i] = merge_relations(i, [])
+
+    else:
+        # merge specific list
+        ret = set()
+        for i in list_relation[list_name]:
+            if i in list_relation:
+                ret |= merge_relations(i, stack+[list_name])
+
+            else:
+                ret.add(i)
+
+        list_relation[list_name] = ret
+        return list_relation[list_name]
+
 def main ():
     load_aliases_file()
     setup_list_relation()
 
     for i in aliases_file:
         process_list_record(i)
+
+    clean_list_relation()
+
+    # merge lists accroding to list_relation
+    merge_relations()
 
     dump_db()
 
