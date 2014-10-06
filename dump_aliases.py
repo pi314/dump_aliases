@@ -21,10 +21,12 @@ def load_aliases_file ():
         i = re.sub(r'#.*$', '', i).strip()
         if i == '' or i[0] == '#':
             continue
+
         if ':include:' in i:
             l = i.split(':')
             list_name, record_type, name_file = l[0], 'file', l[-1].split('/')[-1]
             aliases_file.append( (list_name, record_type, name_file) )
+
         else:
             l = i.split(':')
             list_name = l[0]
@@ -59,11 +61,13 @@ def process_name_file (list_name, file_name, stack):
         if ':include:' in i:
             sub_file_name = i.split('/')[-1]
             process_name_file(list_name, sub_file_name, stack + [file_name])
+
         elif '@' in i:
             add_to_db(list_name, i)
+
         elif i in list_relation:
             list_relation[list_name].add(i)
-            pass
+
         else:
             add_to_db(list_name, i)
 
@@ -72,8 +76,10 @@ def process_list_record (record):
 
     if record_type == 'file':
         process_name_file(list_name, data, [])
+
     elif record_type == 'mail':
         add_to_db(list_name, data)
+
     else:
         print('Error record type:', record)
         exit()
