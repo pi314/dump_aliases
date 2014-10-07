@@ -99,12 +99,18 @@ def clean_list_relation ():
 
     list_relation = ret
 
-# def apply_relations (some_arguments):
-#     for main_list_name in list_relation:
-#         for sub_list_name in list_relation[main_list_name]:
-#             for i in db[sub_list_name]:
-#                 print('merge(',sub_list_name,')', main_list_name, i)
-#                 add_to_db(main_list_name, i)
+def apply_relations (main_list_name, stack):
+    if main_list_name in stack: return
+
+    ret = db[main_list_name]
+
+    if main_list_name not in list_relation:
+        return ret
+
+    for sub_list_name in list_relation[main_list_name]:
+        ret |= apply_relations(sub_list_name, stack + [main_list_name])
+
+    return ret
 
 def main ():
     load_aliases_file()
@@ -115,7 +121,8 @@ def main ():
 
     clean_list_relation()
 
-    apply_relations()
+    for i in db:
+        db[i] |= apply_relations(i, [])
 
     dump_db()
 
