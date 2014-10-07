@@ -1,17 +1,17 @@
-100g:   :include:./labmate/100g.name
-101g:   :include:./labmate/101g.name
-102g:   :include:./labmate/102g.name
-103g:   :include:./labmate/103g.name
-phd:    :include:./labmate/phd.name
-meeting: :include:./labmate/meeting.name
-graduated_phd:  :include:./labmate/graduated_phd.name
+100g:   :include:/usr/home/apua/dump_aliases/test_files/labmate/100g.name
+101g:   :include:/usr/home/apua/dump_aliases/test_files/labmate/101g.name
+102g:   :include:/usr/home/apua/dump_aliases/test_files/labmate/102g.name
+103g:   :include:/usr/home/apua/dump_aliases/test_files/labmate/103g.name
+phd:    :include:/usr/home/apua/dump_aliases/test_files/labmate/phd.name
+meeting: :include:/usr/home/apua/dump_aliases/test_files/labmate/meeting.name
+graduated_phd:  :include:/usr/home/apua/dump_aliases/test_files/labmate/graduated_phd.name
 
 MAILER-DAEMON: postmaster
 Postmaster: root
-all_students:   :include:./labmate/all_students.name
-alumni: :include:./labmate/alumni.name     
+all_students:   :include:/usr/home/apua/dump_aliases/test_files/labmate/all_students.name
+alumni: :include:/usr/home/apua/dump_aliases/test_files/labmate/alumni.name     
 
 root: admin@domain1, admin@domain2
-test:  :include:./labmate/test.name
+test:  :include:/usr/home/apua/dump_aliases/test_files/labmate/test.name
 nobody: /dev/null
 
