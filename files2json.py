@@ -7,6 +7,7 @@ Warning:
 
 
 import argparse
+import re
 from os import getcwd, chdir, listdir
 from os.path import isdir
 
@@ -16,6 +17,9 @@ def files2json(root_dir):
   given root directory, collecting all files' contents to
   one python script with Python dict and string formatting
   """
+
+  patt = re.compile(r'', flags=re.M|re.S)
+  repl = lambda m: ''
 
   def dir2dict(dirname):
     """
@@ -32,6 +36,12 @@ def files2json(root_dir):
     filename: str -> contents: list
     """
     return open(filename).readlines()
+
+  def file2str(filename):
+    """
+    filename: str -> modified contents: str
+    """
+    return patt.sub(repl, open(filename).read())
 
   data = {root_dir: dir2dict(root_dir)}
   return data
