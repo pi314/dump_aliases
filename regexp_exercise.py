@@ -20,7 +20,7 @@ Try to implement patten and sub function ``f``.
 
 import re
 
-patt = r'([^"#]*)("(?:[^"#]*(?:#.*$)?)*")?(#.*$)'
+patt = r'([^"#]*)("(?:[^"#]*(?:#.*$)?)*")?(#.*$)?'
 string = 'tttt"aaaa#qqqq\n#qq"qq\naaaa"===='
 flags = re.M | re.S
 
