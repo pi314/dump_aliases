@@ -9,7 +9,7 @@ Warning:
 import argparse
 import re
 from os import getcwd, chdir, listdir
-from os.path import isdir
+from os.path import isdir, abspath
 
 
 def files2json(root_dir):
@@ -18,15 +18,18 @@ def files2json(root_dir):
   one python script with Python dict and string formatting
   """
 
-  patt = re.compile(r'', flags=re.M|re.S)
-  repl = lambda m: ''
+  root_path = abspath(root_dir)
+
+  patt = re.compile(r'([^"#]*)("(?:[^"#]*(?:#.*$)?)*")?(#.*$)?', flags=re.M|re.S)
+  blank = lambda s: s.replace(root_path, "{root_path}")
+  repl = lambda m: (m.group(1)) + (m.group(2) or '') + (m.group(3) or '')
 
   def dir2dict(dirname):
     """
     dirname: str -> data: dict
     """
     chdir(dirname)
-    data = {name: (dir2dict if isdir(name) else file2list)(name)
+    data = {name: (dir2dict if isdir(name) else file2str)(name)
             for name in listdir('.')}
     chdir('..')
     return data
@@ -54,81 +57,3 @@ if __name__=='__main__':
 
   root = 'test_files'
   print __import__('json').dumps(files2json(root), indent=2)
-
-  """
-  {
-    "test_files": {
-      "labmate": {
-        "graduated_phd.name": [
-          "graduated_phd1@domain1\n",
-          "graduated_phd2@domain2\n",
-          "graduated_phd3@domain3\n"
-        ],
-        "meeting.name": [
-          "meeting1@domain1\n",
-          ":include:./labmate/phd.name\n",
-          "102g\n",
-          "103g\n",
-          "meeting1@domain2\n"
-        ],
-        "test.name": [
-          "test@test.domain\n"
-        ],
-        "all_students.name": [
-          "student1@domain1\n",
-          "alumni\n",
-          ":include:./labmate/phd.name\n",
-          "102g\n",
-          "103g\n"
-        ],
-        "100g.name": [
-          "100g1@domain1\n",
-          "100g2@domain2\n"
-        ],
-        "phd.name": [
-          "phd1@domain1\n",
-          "phd2@domain2\n",
-          "phd3@domain3\n"
-        ],
-        "alumni.name": [
-          "alumni1@domain1\r\n",
-          "100g\r\n",
-          "alumni2@domain2\r\n",
-          "101g\r\n",
-          "alumni3@domain3\r\n"
-        ],
-        "102g.name": [
-          "102g1@domain1\n",
-          "102g2@domain2\n"
-        ],
-        "103g.name": [
-          "103g1@domain1\n",
-          "103g2@domain2\n"
-        ],
-        "101g.name": [
-          "101g1@domain1\n",
-          "101g2@domain2\n"
-        ]
-      },
-      "aliases": [
-        "100g:   :include:./labmate/100g.name\n",
-        "101g:   :include:./labmate/101g.name\n",
-        "102g:   :include:./labmate/102g.name\n",
-        "103g:   :include:./labmate/103g.name\n",
-        "phd:    :include:./labmate/phd.name\n",
-        "meeting: :include:./labmate/meeting.name\n",
-        "graduated_phd:  :include:./labmate/graduated_phd.name\n",
-        "\n",
-        "MAILER-DAEMON: postmaster\n",
-        "Postmaster: root\n",
-        "all_students:   :include:./labmate/all_students.name\n",
-        "alumni: :include:./labmate/alumni.name     \n",
-        "\n",
-        "root: admin@domain1, admin@domain2\n",
-        "test:  :include:./labmate/test.name\n",
-        "nobody: /dev/null\n",
-        "\n"
-      ]
-    }
-  }
-  """
