@@ -6,8 +6,8 @@ Warning:
 """
 
 
-import os
 import argparse
+from os import getcwd, chdir, listdir
 from os.path import isdir
 
 
@@ -21,10 +21,10 @@ def files2json(root_dir):
     """
     dirname: str -> data: dict
     """
-    os.chdir(dirname)
+    chdir(dirname)
     data = {name: (dir2dict if isdir(name) else file2list)(name)
-            for name in os.listdir('.')}
-    os.chdir('..')
+            for name in listdir('.')}
+    chdir('..')
     return data
 
   def file2list(filename):
