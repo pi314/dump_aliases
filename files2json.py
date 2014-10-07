@@ -37,9 +37,7 @@ def files2json(root_dir):
   patt = re.compile(r'([^"#]*)("(?:[^"#]*(?:#.*$)?)*")?(#.*$)?', flags=re.M|re.S)
   blank = lambda s: s.replace('{','{{').replace('}','}}').replace(root_path, "{root_path}")
   repl = lambda m: blank(m.group(1)) + (m.group(2) or '') + (m.group(3) or '')
-  data = {root_dir: dir2dict(root_dir)}
-  return data
-
+  return dir2dict(root_dir)
 
 
 if __name__=='__main__':

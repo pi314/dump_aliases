@@ -1,75 +1,73 @@
 {
-  "test_files/": {
-    "labmate": {
-      "graduated_phd.name": [
-        "graduated_phd1@domain1", 
-        "graduated_phd2@domain2", 
-        "graduated_phd3@domain3"
-      ], 
-      "meeting.name": [
-        "meeting1@domain1", 
-        ":include:{root_path}/labmate/phd.name", 
-        "102g", 
-        "103g", 
-        "meeting1@domain2"
-      ], 
-      "test.name": [
-        "test@test.domain"
-      ], 
-      "all_students.name": [
-        "student1@domain1", 
-        "alumni", 
-        ":include:{root_path}/labmate/phd.name", 
-        "102g", 
-        "103g"
-      ], 
-      "100g.name": [
-        "100g1@domain1", 
-        "100g2@domain2"
-      ], 
-      "phd.name": [
-        "phd1@domain1", 
-        "phd2@domain2", 
-        "phd3@domain3"
-      ], 
-      "alumni.name": [
-        "alumni1@domain1", 
-        "100g", 
-        "alumni2@domain2", 
-        "101g", 
-        "alumni3@domain3"
-      ], 
-      "102g.name": [
-        "102g1@domain1", 
-        "102g2@domain2"
-      ], 
-      "103g.name": [
-        "103g1@domain1", 
-        "103g2@domain2"
-      ], 
-      "101g.name": [
-        "101g1@domain1", 
-        "101g2@domain2"
-      ]
-    }, 
-    "aliases": [
-      "100g:   :include:{root_path}/labmate/100g.name", 
-      "101g:   :include:{root_path}/labmate/101g.name", 
-      "102g:   :include:{root_path}/labmate/102g.name", 
-      "103g:   :include:{root_path}/labmate/103g.name", 
-      "phd:    :include:{root_path}/labmate/phd.name", 
-      "meeting: :include:{root_path}/labmate/meeting.name", 
-      "graduated_phd:  :include:{root_path}/labmate/graduated_phd.name", 
-      "", 
-      "MAILER-DAEMON: postmaster", 
-      "Postmaster: root", 
-      "all_students:   :include:{root_path}/labmate/all_students.name", 
-      "alumni: :include:{root_path}/labmate/alumni.name     ", 
-      "", 
-      "root: admin@domain1, admin@domain2", 
-      "test:  :include:{root_path}/labmate/test.name", 
-      "nobody: /dev/null", 
-      ""
+  "labmate": {
+    "graduated_phd.name": [
+      "graduated_phd1@domain1", 
+      "graduated_phd2@domain2", 
+      "graduated_phd3@domain3"
+    ], 
+    "meeting.name": [
+      "meeting1@domain1", 
+      ":include:{root_path}/labmate/phd.name", 
+      "102g", 
+      "103g", 
+      "meeting1@domain2"
+    ], 
+    "test.name": [
+      "test@test.domain"
+    ], 
+    "all_students.name": [
+      "student1@domain1", 
+      "alumni", 
+      ":include:{root_path}/labmate/phd.name", 
+      "102g", 
+      "103g"
+    ], 
+    "100g.name": [
+      "100g1@domain1", 
+      "100g2@domain2"
+    ], 
+    "phd.name": [
+      "phd1@domain1", 
+      "phd2@domain2", 
+      "phd3@domain3"
+    ], 
+    "alumni.name": [
+      "alumni1@domain1", 
+      "100g", 
+      "alumni2@domain2", 
+      "101g", 
+      "alumni3@domain3"
+    ], 
+    "102g.name": [
+      "102g1@domain1", 
+      "102g2@domain2"
+    ], 
+    "103g.name": [
+      "103g1@domain1", 
+      "103g2@domain2"
+    ], 
+    "101g.name": [
+      "101g1@domain1", 
+      "101g2@domain2"
     ]
-  }
+  }, 
+  "aliases": [
+    "100g:   :include:{root_path}/labmate/100g.name", 
+    "101g:   :include:{root_path}/labmate/101g.name", 
+    "102g:   :include:{root_path}/labmate/102g.name", 
+    "103g:   :include:{root_path}/labmate/103g.name", 
+    "phd:    :include:{root_path}/labmate/phd.name", 
+    "meeting: :include:{root_path}/labmate/meeting.name", 
+    "graduated_phd:  :include:{root_path}/labmate/graduated_phd.name", 
+    "", 
+    "MAILER-DAEMON: postmaster", 
+    "Postmaster: root", 
+    "all_students:   :include:{root_path}/labmate/all_students.name", 
+    "alumni: :include:{root_path}/labmate/alumni.name     ", 
+    "", 
+    "root: admin@domain1, admin@domain2", 
+    "test:  :include:{root_path}/labmate/test.name", 
+    "nobody: /dev/null", 
+    ""
+  ]
 }
