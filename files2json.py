@@ -46,8 +46,10 @@ if __name__=='__main__':
 
   from argparse import ArgumentParser
   from json import dumps
+  from sys import stderr
   parser = ArgumentParser()
   parser.add_argument('root_dir')
   root_dir = parser.parse_args().root_dir
-  print(__doc__)
+  stderr.write(__doc__)
+  stderr.write('\n')
   print(dumps(files2json(root_dir),indent=2))

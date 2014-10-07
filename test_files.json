@@ -1,9 +1,3 @@
-
-Warning:
-  This program is designed for absolute path and local files but soft-link
-  files. It will cause unexpected error if there are soft-link or related
-  path.
-
 {
   "test_files/": {
     "labmate": {
