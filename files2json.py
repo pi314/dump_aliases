@@ -1,9 +1,8 @@
 """
-This program will collect all files to one JSON file,
-and transform the path of ``:include:`` as Python string
-format parameters.
-If there are some files nothing to do, they will be
-collected, too. Run this program carefully!!
+Warning:
+  This program is designed for absolute path and local files but soft-link
+  files. It will cause unexpected error if there are soft-link or related
+  path.
 """
 
 
@@ -40,6 +39,9 @@ def files2json(root_dir):
 
 
 if __name__=='__main__':
+
+  print(__doc__)
+
   root = 'test_files'
   print __import__('json').dumps(files2json(root), indent=2)
 
