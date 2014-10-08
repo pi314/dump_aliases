@@ -127,6 +127,10 @@ def main ():
 
     dump_db()
 
+    for i in list_relation:
+        for j in list_relation[i]:
+            print('#', '{}:{}'.format(i, j) )
+
 if __name__ == '__main__':
     main()
 
