@@ -97,6 +97,10 @@ def clean_list_relation ():
 def apply_relations (main_list_name, stack):
     if main_list_name in stack: return
 
+    if main_list_name not in db:
+        # this file is empty, or everything was commented
+        return set()
+
     ret = db[main_list_name]
 
     if main_list_name not in list_relation:
