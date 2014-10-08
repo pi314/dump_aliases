@@ -2,11 +2,6 @@ import sys
 import os
 import re
 
-if len(sys.argv) < 3:
-    print('Usage:')
-    print(' ', sys.argv[0], '<etc_aliases> <name_files_dir>')
-    exit()
-
 ETC_ALIASES = sys.argv[1]
 NAME_FILES_DIR = sys.argv[2]
 
@@ -113,6 +108,12 @@ def apply_relations (main_list_name, stack):
     return ret
 
 def main ():
+
+    if len(sys.argv) < 3:
+        print('Usage:')
+        print(' ', sys.argv[0], '<etc_aliases> <name_files_dir>')
+        exit()
+
     load_aliases_file()
     setup_list_relation()
 
