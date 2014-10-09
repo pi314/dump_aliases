@@ -8,11 +8,13 @@ issues:
   - store all error/warning(s) and output it.
   - use unittest but doctest to avoid charactor escaping problems.
 
-doctest:
-  >>> content = '''
-  ... # user2 : something , name@domain, |cmd, " | cmd2 arg" , :include:   another_file
-  ... user  : something , name@domain, |cmd, " | cmd2 arg" , :include:   another_file
-  ... '''
+cleaning rules:
+  + r'#.*$' should be ignored
+  + replace '\n ' as ' '
+  + r'"[^"]"'should not be modified; else:
+    - ' +' -> ' '
+    - ' +:' | ': +' -> ''
+    - ' *, *' -> ', '
 """
 
 
