@@ -78,3 +78,12 @@ def main(aliases_path):
   result.sort()
   #__import__('pprint').pprint(result)
   return result
+
+
+if __name__=='__main__':
+
+  from argparse import ArgumentParser
+  parser = ArgumentParser()
+  parser.add_argument('aliases_path')
+  aliases_path = parser.parse_args().aliases_path
+  print(main(aliases_path))
