@@ -45,6 +45,14 @@ def cleaned(content):
   return content
 
 
+def clean_key(key):
+  r"""
+  >>> cleaned_key('a \"b c\"\"\"d')
+  'a b c d'
+  """
+  return re.sub(r'"([^"]*)"', lambda m: m.group(1) or ' ', key)
+
+
 def split2kv(line):
   '''
   only use for aliases file but other included files
