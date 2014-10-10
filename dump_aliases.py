@@ -1,20 +1,25 @@
-"""
+r"""
 usage:
   $cmd $aliases_file_path
 
-issues:
+background:
   - assume that the aliases file has passed ``postalias``
-  - use ``argparse`` to get arguments
+
+issues:
   - store all error/warning(s) and output it.
-  - use unittest but doctest to avoid charactor escaping problems.
 
 cleaning rules:
-  + r'#.*$' should be ignored
-  + replace '\n ' as ' '
-  + r'"[^"]"'should not be modified; else:
-    - ' +' -> ' '
-    - ' +:' | ': +' -> ''
-    - ' *, *' -> ', '
+  1. '#.*$' should be ignored
+  2. replace '\n |[\t\r\f\v]' as ' '
+  3. '"[^"]"'should not be modified; else:
+    a. ' +' -> ' '
+    b. ' ?: ?' -> ':'
+    c. ' ?, ?' -> ', '
+  4. remove blank line
+
+key verifying rules:
+  1. '""' -> ' '
+  2. '"([^"]+)"' -> \1
 """
 
 
@@ -22,14 +27,21 @@ import re
 
 
 def cleaned(content):
-  '''
-  - remove slash and concatenate with next line
-  - remove all comments
-  - remove blank lines
-  '''
+  r"""
+  >>> content = '\na  :  b  ,c:,  "  ,  \n  : d"\t\r\n\r e\n'
+  >>> cleaned(content)
+  'a:b, c:, ", :d" e\n'
+  """
+  def subclean(m):
+    s = m.group()
+    s = re.sub(r' +', ' ', s)
+    s = re.sub(r' ?: ?', ':', s)
+    s = re.sub(r' ?, ?', ', ', s)
+    return s
   content = re.sub(r'#.*$', '', content, flags=re.M)
-  content = re.sub(r'\\[\n\r]', '', content)
-  content = re.sub(r'^\s*', '', content, flags=re.M)
+  content = re.sub(r'\n\s|[\t\r\f\v]', ' ', content)
+  content = re.sub(r'(.*)("[^"]*")?', subclean, content)
+  content = re.sub(r'^\s+', '', content)
   return content
 
 
