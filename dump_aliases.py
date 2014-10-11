@@ -7,20 +7,19 @@ background:
 
 issues:
   - store all error/warning(s) and output it.
-  - consider '\"'
 
 cleaning rules:
-  1. '#.*$' should be ignored
-  2. replace '\n |[\t\r\f\v]' as ' '
-  3. '"[^"]"'should not be modified; else:
-    a. ' +' -> ' '
-    b. ' ?: ?' -> ':'
-    c. ' ?, ?' -> ', '
+  1. r'#.*$' should be ignored
+  2. replace r'\n |[\t\r\f\v]' as ' '
+  3. r'".*?(?<!\\)"'should not be modified; else:
+    a. r' +' -> ' '
+    b. r' ?: ?' -> ':'
+    c. r' ?, ?' -> ', '
   4. remove blank line
 
 key verifying rules:
-  1. '""' -> ' '
-  2. '"([^"]+)"' -> \1
+  1. r'""' -> ' '
+  2. r'"([^"]+)"' -> '\1'
 
 doctest:
   >>> content = '''
