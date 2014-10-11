@@ -38,7 +38,7 @@ def get_cleaned_content(file_path):
     'a:b, c:, ", :d" e\n'
     """
     def subclean(m):
-      s = m.group()
+      s = m.group(1)
       s = re.sub(r' +', ' ', s)
       s = re.sub(r' ?: ?', ':', s)
       s = re.sub(r' ?, ?', ', ', s)
@@ -54,7 +54,7 @@ def get_cleaned_content(file_path):
 
 def clean_key(key):
   r"""
-  >>> cleaned_key('a \"b c\"\"\"d')
+  >>> clean_key('a \"b c\"\"\"d')
   'a b c d'
   """
   return re.sub(r'"([^"]*)"', lambda m: m.group(1) or ' ', key)
