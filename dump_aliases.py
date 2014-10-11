@@ -21,41 +21,50 @@ cleaning rules:
 key verifying rules:
   1. '""' -> ' '
   2. '"([^"]+)"' -> \1
+
+doctest:
+  >>> content = '''
+  ... a \"b c\"\"\"d:  b  ,c:,  "  , \x20
+  ...   : \\"d"\t\r
+  ... \r e
+  ... f:g
+  ... '''
+  >>> records = cleaned(content).splitlines()
+  >>> records == ['a \"b c\"\"\"d:b, c:, "  ,    : \\"d" e', 'f:g']
+  True
+  >>> alias = records[0]
+  >>> alias == 'a \"b c\"\"\"d:b, c:, "  ,    : \\"d" e'
+  True
+  >>> split_alias(alias) == ('a b c d', ['b','c:','"  ,    : \\"d"','e'])
+  True
 """
 
 
 import re
 
 
-def get_cleaned_content(file_path):
+def cleaned(content):
   """
-  file_path: str -> cleaned lines: list
+  Accoring to ``postalias`` progress and binary data in aliases.db,
+  rewritting it.
   """
-  def cleaned(content):
-    r"""
-    >>> content = '\na  :  b  ,c:,  "  ,  \n  : d"\t\r\n\r e\n'
-    >>> cleaned(content)
-    'a:b, c:, ", :d" e\n'
-    """
-    def subclean(m):
-      s = m.group(1)
-      s = re.sub(r' +', ' ', s)
-      s = re.sub(r' ?: ?', ':', s)
-      s = re.sub(r' ?, ?', ', ', s)
-      return s
-    content = re.sub(r'#.*$', '', content, flags=re.M)
-    content = re.sub(r'\n\s|[\t\r\f\v]', ' ', content)
-    content = re.sub(r'(.*)(".*?(?<!\\)")?', subclean, content)
-    content = re.sub(r'^\s+', '', content)
-    return content
-
-  return cleaned(open(file_path).read()).splitlines()
+  def subclean(m):
+    s, t = m.groups()
+    s = re.sub(r' +', ' ', s)
+    s = re.sub(r' ?: ?', ':', s)
+    s = re.sub(r' ?, ?', ', ', s)
+    t = t or ''
+    return s + t
+  content = re.sub(r'#.*$', '', content, flags=re.M)
+  content = re.sub(r'\n\s|[\t\r\f\v]', ' ', content)
+  content = re.sub(r'([^"]*)(".*?(?<!\\)")?', subclean, content)
+  content = re.sub(r'^\s+', '', content)
+  return content
 
 
 def clean_key(key):
-  r"""
-  >>> clean_key('a \"b c\"\"\"d')
-  'a b c d'
+  """
+  key: str -> cleaned key: str
   """
   return re.sub(r'"([^"]*)"', lambda m: m.group(1) or ' ', key)
 
@@ -63,8 +72,6 @@ def clean_key(key):
 def split_values(values):
   """
   cleaned values: str -> list
-  >>> split_values('b, c:, ", :d" e, :include:/dev/null')
-  ['b', 'c:', '", :d"', 'e']
   """
   result = []
   for value in re.findall(r'".*?(?<!\\)"|[^, ]+', values):
@@ -82,6 +89,13 @@ def split_alias(record):
   """
   key, values = record.split(':', 1)
   return clean_key(key), split_values(values)
+
+
+def get_cleaned_content(file_path):
+  """
+  file_path: str -> cleaned lines: list
+  """
+  return cleaned(open(file_path).read()).splitlines()
 
 
 def parse_include_file(file_path):
